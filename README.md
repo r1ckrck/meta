@@ -1,8 +1,9 @@
 <h1 align="center">meta</h1>
 
 <p align="center">
-  Read, edit and strip image and video metadata in a clean browser page.<br>
-  One Python file. Nothing to install but exiftool. Nothing leaves your Mac.
+  See, compare, edit and strip the metadata in any image or video,<br>
+  including the ComfyUI prompts hidden inside your renders.<br>
+  One Python file on top of exiftool. Nothing leaves your Mac.
 </p>
 
 <p align="center">
@@ -21,11 +22,43 @@
 
 ## Features
 
-- **Read**: tags grouped into plain sections (Camera, Image, Video & audio, Location, Dates, AI generation and more), with the raw tags one click away.
-- **Edit**: change any writable field, review the changes, then save.
-- **Strip**: remove single fields, or everything with **Strip all** (orientation and color profile are kept, so the picture still looks right).
-- **ComfyUI**: the `prompt` and `workflow` JSON in ComfyUI PNGs is split into one section per node, with a summary of the sampler, seed, steps, model and LoRAs. Every node value is editable.
-- **Compare**: pick a second file to see which fields differ, with word-level highlights inside long fields like prompts.
+### Any file exiftool can read
+
+Photos, RAW, HEIC, PNG, video, audio, and anything else [exiftool](https://exiftool.org/#supported) understands: EXIF, XMP, IPTC, GPS, QuickTime, PNG text chunks and maker notes. Tags are grouped into plain sections instead of one long list:
+
+| Section | For example |
+|---|---|
+| Location | GPS coordinates, city, country |
+| Owner & device | Owner name, camera and lens serial numbers |
+| Dates | Taken, created, modified, time zones |
+| Camera | Make, model, lens, aperture, shutter, ISO |
+| Video & audio | Duration, frame rate, codecs, channels |
+| AI generation | ComfyUI prompt and workflow, generation parameters |
+| Description & rights | Title, caption, keywords, copyright |
+
+Location and owner details come first, because they're what you usually want to check before sharing a file. The raw exiftool tags are one click away.
+
+### ComfyUI prompts, readable
+
+ComfyUI stores the full node graph as JSON in every PNG it saves. meta turns it back into something you can read:
+
+- **Summary**: model, LoRAs with their strengths, positive and negative prompt, seed, steps, CFG, sampler, scheduler, denoise and size. Values wired in from other nodes (primitives, text concatenation, math nodes) are followed back to their source, so you see the value that was actually used.
+- **One section per node**: each node shows its ID, type and inputs, for both the `prompt` and the `workflow` JSON.
+- **Editable**: change any node value, a prompt word or a seed, and save. Everything else in the JSON stays byte-for-byte the same, including large seeds.
+
+### Compare two files
+
+Pick a second file and meta shows them side by side as A and B:
+
+- **Changed, Only in A, Only in B, Same**: every field sorted by how it differs.
+- **Inside long fields**: word-level highlights show exactly what changed in a prompt or caption, not just that it changed.
+- **ComfyUI renders**: the summary diff shows the seed, steps and LoRA strengths that changed, and the node diff lists only the nodes and inputs that differ. Useful for finding why two renders from the same workflow look different.
+
+### Edit and strip
+
+- **Edit** any writable field or add a new one, review a list of changes, then save.
+- **Strip** single fields, or everything with **Strip all**. The color profile and orientation are kept, so the picture still looks right.
+- **Backups**: before any change to a file on disk, a copy goes to the Trash. See [How your files are treated](#how-your-files-are-treated).
 
 ## Requirements
 
